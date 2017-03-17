@@ -1,0 +1,2 @@
+python main.py --dataset animalface150 --input_height=150 --is_train --is_crop True --epoch 100 > log/animalface-mar7.txt &
+

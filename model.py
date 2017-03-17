@@ -17,7 +17,7 @@ class DCGAN(object):
   def __init__(self, sess, input_height=108, input_width=108, is_crop=True,
          batch_size=64, sample_num = 64, output_height=64, output_width=64,
          y_dim=None, z_dim=100, gf_dim=64, df_dim=64,
-         gfc_dim=1024, dfc_dim=1024, c_dim=3, dataset_name='default',
+         gfc_dim=1024, dfc_dim=1024, c_dim=3, g_advantage=2, dataset_name='default',
          input_fname_pattern='*.jpg', checkpoint_dir=None, sample_dir=None):
     """
 
@@ -31,7 +31,8 @@ class DCGAN(object):
       gfc_dim: (optional) Dimension of gen units for for fully connected layer. [1024]
       dfc_dim: (optional) Dimension of discrim units for fully connected layer. [1024]
       c_dim: (optional) Dimension of image color. For grayscale input, set to 1. [3]
-    """
+      g_advantage: (optional) iterations generator performs to minimize loss for smaller datasets [2]
+   """
     self.sess = sess
     self.is_crop = is_crop
     self.is_grayscale = (c_dim == 1)
@@ -54,6 +55,8 @@ class DCGAN(object):
     self.dfc_dim = dfc_dim
 
     self.c_dim = c_dim
+
+    self.g_advantage = g_advantage
 
     # batch normalization : deals with poor initialization helps gradient flow
     self.d_bn1 = batch_norm(name='d_bn1')
@@ -266,15 +269,11 @@ class DCGAN(object):
           self.writer.add_summary(summary_str, counter)
 
           # Update G network
-          _, summary_str = self.sess.run([g_optim, self.g_sum],
-            feed_dict={ self.z: batch_z })
-          self.writer.add_summary(summary_str, counter)
+          for i in range (0, g_advantage):
+            _, summary_str = self.sess.run([g_optim, self.g_sum],
+              feed_dict={ self.z: batch_z })
+            self.writer.add_summary(summary_str, counter)
 
-          # Run g_optim twice to make sure that d_loss does not go to zero (different from paper)
-          _, summary_str = self.sess.run([g_optim, self.g_sum],
-            feed_dict={ self.z: batch_z })
-          self.writer.add_summary(summary_str, counter)
-          
           errD_fake = self.d_loss_fake.eval({ self.z: batch_z })
           errD_real = self.d_loss_real.eval({ self.inputs: batch_images })
           errG = self.g_loss.eval({self.z: batch_z})

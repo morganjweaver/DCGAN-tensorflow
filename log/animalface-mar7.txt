@@ -1,0 +1,27 @@
+{'batch_size': 64,
+ 'beta1': 0.5,
+ 'c_dim': 3,
+ 'checkpoint_dir': 'checkpoint',
+ 'dataset': 'animalface150',
+ 'epoch': 100,
+ 'input_fname_pattern': '*.jpg',
+ 'input_height': 150,
+ 'input_width': None,
+ 'is_crop': True,
+ 'is_train': True,
+ 'learning_rate': 0.0002,
+ 'output_height': 64,
+ 'output_width': None,
+ 'sample_dir': 'samples',
+ 'train_size': inf,
+ 'visualize': False}
+ [*] Reading checkpoints...
+ [*] Success to read DCGAN.model-2
+ [*] Load SUCCESS
+Epoch: [ 0] [   0/  18] time: 2.1904, d_loss: 6.99751568, g_loss: 0.00111078
+Epoch: [ 0] [   1/  18] time: 5.9674, d_loss: 7.88712120, g_loss: 0.00230358
+Epoch: [ 0] [   2/  18] time: 6.7648, d_loss: 8.91565132, g_loss: 0.00096637
+Epoch: [ 0] [   3/  18] time: 7.5564, d_loss: 9.03586769, g_loss: 0.00106752
+Epoch: [ 0] [   4/  18] time: 8.3546, d_loss: 9.20183563, g_loss: 0.00118921
+Epoch: [ 0] [   5/  18] time: 9.1512, d_loss: 9.73313999, g_loss: 0.00097784
+Epoch: [ 0] [   6/  18] time: 9.9490, d_loss: 9.26745987, g_loss: 0.00105650
