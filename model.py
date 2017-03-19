@@ -166,8 +166,9 @@ class DCGAN(object):
       self.G_sum, self.d_loss_fake_sum, self.g_loss_sum])
     self.d_sum = merge_summary(
         [self.z_sum, self.d_sum, self.d_loss_real_sum, self.d_loss_sum])
+    print("SummaryWriter print 1/2")
     self.writer = SummaryWriter("./logs", self.sess.graph)
-
+    print("Summary writer print 2/2")
     sample_z = np.random.uniform(-1, 1, size=(self.sample_num , self.z_dim))
     
     if config.dataset == 'mnist':
@@ -269,7 +270,11 @@ class DCGAN(object):
           self.writer.add_summary(summary_str, counter)
 
           # Update G network
-          for i in range (0, g_advantage):
+          g_adv = self.g_advantage
+         # print("Generator advantage: " )
+         # print(g_adv)
+          for i in range (0, g_adv):
+          #  print("i is equal to %d" % (i))
             _, summary_str = self.sess.run([g_optim, self.g_sum],
               feed_dict={ self.z: batch_z })
             self.writer.add_summary(summary_str, counter)
